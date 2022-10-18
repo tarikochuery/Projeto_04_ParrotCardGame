@@ -78,10 +78,6 @@ body,
     height: 100px;
 }
 
-.card:hover .flipper {
-    transform: rotateY(180deg);
-}
-
 .is-flipped {
     transform: rotateY(180deg);
 }
