@@ -1,4 +1,3 @@
-
 let numberOfCards
 let cardsInTheGame = []
 const imagesSrcs = [
@@ -58,3 +57,12 @@ const shuffle = array => {
 }
 
 startGame()
+
+const cards = document.querySelectorAll('.flipper')
+
+const flipCard = (element) => {
+    element.classList.toggle('is-flipped')
+}
+    
+cards.forEach(flipper => flipper.addEventListener('click', () => flipCard(flipper)))
+    
