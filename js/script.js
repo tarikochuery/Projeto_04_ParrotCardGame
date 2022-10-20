@@ -1,3 +1,5 @@
+let moves = 0;
+let matches = 0;
 let numberOfCards;
 let cardsInTheGame = [];
 const imagesSrcs = [
@@ -21,6 +23,11 @@ const startGame = () => {
 
     buildCardsArray(numberOfImages);
     placeCardsOnScreen();
+};
+
+const endGame = () => {
+    const message = `Você ganhou em ${moves} jogadas!`;
+    alert(message);
 };
 
 const buildCardHTMLElement = (imageSrc) => {
@@ -74,6 +81,7 @@ const isAMatch = (card1, card2) => {
 };
 
 function makeMove(element) {
+    moves++;
     flipCard(element);
     const chosenCards = document.querySelectorAll('.chosen');
     if (chosenCards.length == 2) {
@@ -81,6 +89,10 @@ function makeMove(element) {
             chosenCards.forEach(card => {
                 card.classList.remove('chosen');
             });
+            matches++;
+            setTimeout(() => {
+                matches === (numberOfCards / 2) && endGame();
+            }, 1000);
             return;
         }
 
