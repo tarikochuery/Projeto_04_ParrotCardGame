@@ -35,7 +35,6 @@ const startGame = () => {
     }
 
     const numberOfImages = numberOfCards / 2;
-    console.log(numberOfImages);
     buildCardsArray(numberOfImages);
     placeCardsOnScreen();
     startTimer = setInterval(() => {
