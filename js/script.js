@@ -12,6 +12,7 @@ const imagesSrcs = [
     'unicornparrot.gif'
 ];
 let secondsAmount = 0;
+let startTimer;
 
 const setTimer = () => {
     const timer = document.querySelector('.timer');
@@ -22,8 +23,9 @@ const setTimer = () => {
 };
 
 
-
 const startGame = () => {
+    document.querySelector('.cards-container').innerHTML = '';
+    secondsAmount = 0;
     numberOfCards = Number(prompt('Com quantas cartas deseja jogar?'));
     while (numberOfCards < 4 || numberOfCards > 14 || (numberOfCards % 2) !== 0) {
         alert('Insira um valor par entre 4 e 14');
@@ -34,7 +36,7 @@ const startGame = () => {
 
     buildCardsArray(numberOfImages);
     placeCardsOnScreen();
-    setInterval(() => {
+    startTimer = setInterval(() => {
         secondsAmount++;
         setTimer();
     }, 1000);
@@ -43,6 +45,14 @@ const startGame = () => {
 const endGame = () => {
     const message = `Você ganhou em ${moves} jogadas, em ${secondsAmount} segundos!`;
     alert(message);
+    clearInterval(startTimer);
+    let restartGame = prompt('Deseja reiniciar a partida? sim ou não');
+    console.log(restartGame);
+    while (restartGame !== 'sim' && restartGame !== 'não') {
+        alert('Resposta inválida. Digite "sim" ou "não"');
+        restartGame = prompt('Deseja reiniciar a partida? sim ou não');
+    }
+    restartGame === 'sim' && startGame();
 };
 
 const buildCardHTMLElement = (imageSrc) => {
@@ -107,7 +117,7 @@ function makeMove(element) {
             matches++;
             setTimeout(() => {
                 matches === (numberOfCards / 2) && endGame();
-            }, 1000);
+            }, 500);
             return;
         }
 
