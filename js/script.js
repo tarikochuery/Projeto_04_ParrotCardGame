@@ -14,6 +14,16 @@ const imagesSrcs = [
 let secondsAmount = 0;
 let startTimer;
 
+const lockCards = () => {
+    const cards = document.querySelectorAll('.flipper');
+    cards.forEach(card => card.setAttribute('onclick', ''));
+};
+
+const unlockCards = () => {
+    const cards = document.querySelectorAll('.flipper');
+    cards.forEach(card => card.setAttribute('onclick', 'makeMove(this)'));
+};
+
 const setTimer = () => {
     const timer = document.querySelector('.timer');
     const SECONDS_DIVIDER = 60;
@@ -109,7 +119,8 @@ function makeMove(element) {
     moves++;
     flipCard(element);
     const chosenCards = document.querySelectorAll('.chosen');
-    if (chosenCards.length == 2) {
+    if (chosenCards.length === 2) {
+        lockCards();
         if (isAMatch(chosenCards[0], chosenCards[1])) {
             chosenCards.forEach(card => {
                 card.classList.remove('chosen');
@@ -123,6 +134,7 @@ function makeMove(element) {
 
         setTimeout(() => {
             chosenCards.forEach(card => flipCard(card));
+            unlockCards();
         }, 1000);
         return;
     }
