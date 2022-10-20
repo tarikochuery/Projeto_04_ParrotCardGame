@@ -35,7 +35,7 @@ const startGame = () => {
     }
 
     const numberOfImages = numberOfCards / 2;
-
+    console.log(numberOfImages);
     buildCardsArray(numberOfImages);
     placeCardsOnScreen();
     startTimer = setInterval(() => {
@@ -49,7 +49,6 @@ const endGame = () => {
     alert(message);
     clearInterval(startTimer);
     let restartGame = prompt('Deseja reiniciar a partida? sim ou não');
-    console.log(restartGame);
     while (restartGame !== 'sim' && restartGame !== 'não') {
         alert('Resposta inválida. Digite "sim" ou "não"');
         restartGame = prompt('Deseja reiniciar a partida? sim ou não');
@@ -71,10 +70,11 @@ const buildCardHTMLElement = (imageSrc) => {
 };
 
 const buildCardsArray = (numberOfImages) => {
-    const imagesInGame = imagesSrcs.splice(0, numberOfImages);
+    const imagesInGame = imagesSrcs.filter((image, idx) => idx < numberOfImages);
     cardsInTheGame = imagesInGame.map(image => (buildCardHTMLElement(image)));
     cardsInTheGame = [...cardsInTheGame, ...cardsInTheGame];
     shuffle(cardsInTheGame);
+    console.log(cardsInTheGame);
 };
 
 const placeCardsOnScreen = () => {
