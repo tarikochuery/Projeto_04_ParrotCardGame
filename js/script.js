@@ -74,7 +74,6 @@ const buildCardsArray = (numberOfImages) => {
     cardsInTheGame = imagesInGame.map(image => (buildCardHTMLElement(image)));
     cardsInTheGame = [...cardsInTheGame, ...cardsInTheGame];
     shuffle(cardsInTheGame);
-    console.log(cardsInTheGame);
 };
 
 const placeCardsOnScreen = () => {
