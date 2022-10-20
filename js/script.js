@@ -1,5 +1,5 @@
-let moves = 0;
-let matches = 0;
+let moves;
+let matches;
 let numberOfCards;
 let cardsInTheGame = [];
 const imagesSrcs = [
@@ -26,6 +26,8 @@ const setTimer = () => {
 const startGame = () => {
     document.querySelector('.cards-container').innerHTML = '';
     secondsAmount = 0;
+    matches = 0;
+    moves = 0;
     numberOfCards = Number(prompt('Com quantas cartas deseja jogar?'));
     while (numberOfCards < 4 || numberOfCards > 14 || (numberOfCards % 2) !== 0) {
         alert('Insira um valor par entre 4 e 14');
@@ -124,7 +126,6 @@ function makeMove(element) {
         setTimeout(() => {
             chosenCards.forEach(card => flipCard(card));
         }, 1000);
-
         return;
     }
 
