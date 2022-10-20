@@ -83,3 +83,12 @@ body,
 .is-flipped {
     transform: rotateY(180deg);
 }
+
+.timer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    color: #75B79E;
+    font-size: 20px;
+    z-index: 1;
+}
