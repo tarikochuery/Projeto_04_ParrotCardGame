@@ -129,6 +129,7 @@ function makeMove(element) {
             setTimeout(() => {
                 matches === (numberOfCards / 2) && endGame();
             }, 500);
+            unlockCards();
             return;
         }
 
