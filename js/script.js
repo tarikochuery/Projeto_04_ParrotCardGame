@@ -15,12 +15,12 @@ let secondsAmount = 0;
 let startTimer;
 
 const lockCards = () => {
-    const cards = document.querySelectorAll('.flipper');
+    const cards = document.querySelectorAll('.flipper:not(.is-flipped)');
     cards.forEach(card => card.setAttribute('onclick', ''));
 };
 
 const unlockCards = () => {
-    const cards = document.querySelectorAll('.flipper');
+    const cards = document.querySelectorAll('.flipper:not(.is-flipped)');
     cards.forEach(card => card.setAttribute('onclick', 'makeMove(this)'));
 };
 
