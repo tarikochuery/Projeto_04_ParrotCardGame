@@ -27,7 +27,7 @@ const unlockCards = () => {
 const setTimer = () => {
     const timer = document.querySelector('.timer');
     const SECONDS_DIVIDER = 60;
-    const minutes = Number((secondsAmount / SECONDS_DIVIDER).toFixed(0)).toLocaleString('pt-br', { minimumIntegerDigits: 2 });
+    const minutes = Math.floor((secondsAmount / SECONDS_DIVIDER)).toLocaleString('pt-br', { minimumIntegerDigits: 2 });
     const seconds = (secondsAmount % SECONDS_DIVIDER).toLocaleString('pt-br', { minimumIntegerDigits: 2 });
     timer.innerHTML = `${minutes}:${seconds}`;
 };
@@ -49,6 +49,7 @@ const startGame = () => {
     placeCardsOnScreen();
     startTimer = setInterval(() => {
         secondsAmount++;
+        console.log(secondsAmount);
         setTimer();
     }, 1000);
 };
