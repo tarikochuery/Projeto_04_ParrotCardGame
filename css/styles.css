@@ -9,7 +9,6 @@
 html,
 body,
 .container {
-    height: 100%;
     font-family: 'Roboto', sans-serif;
 }
 
@@ -20,6 +19,8 @@ body,
 
     background-color: #eef9bf;
     padding-top: 40px;
+    padding-bottom: 20px;
+    min-height: 100vh;
 }
 
 .title {
@@ -27,16 +28,17 @@ body,
     color: #75B79E;
     letter-spacing: -0.4%;
     margin-bottom: 47px;
+    text-align: center;
 }
 
 .cards-container {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
     justify-content: center;
     gap: 34px;
 
     width: 100%;
+    height: 100%;
     max-width: 900px;
 }
 
@@ -80,4 +82,13 @@ body,
 
 .is-flipped {
     transform: rotateY(180deg);
+}
+
+.timer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    color: #75B79E;
+    font-size: 20px;
+    z-index: 1;
 }

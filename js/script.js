@@ -1,3 +1,5 @@
+let moves;
+let matches;
 let numberOfCards;
 let cardsInTheGame = [];
 const imagesSrcs = [
@@ -9,8 +11,33 @@ const imagesSrcs = [
     'tripletsparrot.gif',
     'unicornparrot.gif'
 ];
+let secondsAmount = 0;
+let startTimer;
+
+const lockCards = () => {
+    const cards = document.querySelectorAll('.flipper:not(.is-flipped)');
+    cards.forEach(card => card.setAttribute('onclick', ''));
+};
+
+const unlockCards = () => {
+    const cards = document.querySelectorAll('.flipper:not(.is-flipped)');
+    cards.forEach(card => card.setAttribute('onclick', 'makeMove(this)'));
+};
+
+const setTimer = () => {
+    const timer = document.querySelector('.timer');
+    const SECONDS_DIVIDER = 60;
+    const minutes = Number((secondsAmount / SECONDS_DIVIDER).toFixed(0)).toLocaleString('pt-br', { minimumIntegerDigits: 2 });
+    const seconds = (secondsAmount % SECONDS_DIVIDER).toLocaleString('pt-br', { minimumIntegerDigits: 2 });
+    timer.innerHTML = `${minutes}:${seconds}`;
+};
+
 
 const startGame = () => {
+    document.querySelector('.cards-container').innerHTML = '';
+    secondsAmount = 0;
+    matches = 0;
+    moves = 0;
     numberOfCards = Number(prompt('Com quantas cartas deseja jogar?'));
     while (numberOfCards < 4 || numberOfCards > 14 || (numberOfCards % 2) !== 0) {
         alert('Insira um valor par entre 4 e 14');
@@ -18,26 +45,29 @@ const startGame = () => {
     }
 
     const numberOfImages = numberOfCards / 2;
-
     buildCardsArray(numberOfImages);
     placeCardsOnScreen();
+    startTimer = setInterval(() => {
+        secondsAmount++;
+        setTimer();
+    }, 1000);
+};
 
-    let numberOfMatches = 0;
-    const cards = document.querySelectorAll('.flipper');
-
-    cards.forEach(flipper => flipper.addEventListener('click', () => flipCard(flipper)));
-
-    // while (numberOfMatches < numberOfImages) {
-    //     const flippedCards = document.querySelectorAll('is-flipped');
-    //     if (flippedCards.length == 2) {
-    //         compareCards(flippedCards[0], flippedCards[1]) && numberOfMatches++;
-    //     }
-    // }
+const endGame = () => {
+    const message = `Você ganhou em ${moves} jogadas, em ${secondsAmount} segundos!`;
+    alert(message);
+    clearInterval(startTimer);
+    let restartGame = prompt('Deseja reiniciar a partida? sim ou não');
+    while (restartGame !== 'sim' && restartGame !== 'não') {
+        alert('Resposta inválida. Digite "sim" ou "não"');
+        restartGame = prompt('Deseja reiniciar a partida? sim ou não');
+    }
+    restartGame === 'sim' && startGame();
 };
 
 const buildCardHTMLElement = (imageSrc) => {
     return `<div class="card">
-        <div class="flipper">
+        <div class="flipper" onclick="makeMove(this)">
             <div class="back-card">
                 <img src="./assets/back.png">
             </div>
@@ -49,7 +79,7 @@ const buildCardHTMLElement = (imageSrc) => {
 };
 
 const buildCardsArray = (numberOfImages) => {
-    const imagesInGame = imagesSrcs.splice(0, numberOfImages);
+    const imagesInGame = imagesSrcs.filter((image, idx) => idx < numberOfImages);
     cardsInTheGame = imagesInGame.map(image => (buildCardHTMLElement(image)));
     cardsInTheGame = [...cardsInTheGame, ...cardsInTheGame];
     shuffle(cardsInTheGame);
@@ -71,16 +101,44 @@ const shuffle = array => {
 
 startGame();
 
-
+const cards = document.querySelectorAll('.flipper');
 
 const flipCard = (element) => {
     element.classList.toggle('is-flipped');
+    element.classList.toggle('chosen');
+    element.getAttribute('onclick') ? element.setAttribute('onclick', '') : element.setAttribute('onclick', 'makeMove(this)');
 };
 
-function compareCards(card1, card2) {
-    return card1.querySelector('#card-image').src === card2.querySelector('#card-image').src;
-}
+const isAMatch = (card1, card2) => {
+    const image1 = card1.querySelector('#card-image').src;
+    const image2 = card2.querySelector('#card-image').src;
+    return image1 === image2;
+};
 
+function makeMove(element) {
+    moves++;
+    flipCard(element);
+    const chosenCards = document.querySelectorAll('.chosen');
+    if (chosenCards.length === 2) {
+        lockCards();
+        if (isAMatch(chosenCards[0], chosenCards[1])) {
+            chosenCards.forEach(card => {
+                card.classList.remove('chosen');
+            });
+            matches++;
+            setTimeout(() => {
+                matches === (numberOfCards / 2) && endGame();
+            }, 500);
+            unlockCards();
+            return;
+        }
 
+        setTimeout(() => {
+            chosenCards.forEach(card => flipCard(card));
+            unlockCards();
+        }, 1000);
+        return;
+    }
 
-//TODO: Implementar lógica do jogo da memória
+    return;
+};
